@@ -68,6 +68,9 @@ drawing fades out over ~600 ms, like powder recoating the inside of the screen.
    get their own branch, PR, and merge. Each is marked with a `TODO` in `sketch.js`
    describing the intended approach.
 
+The three remaining tickets, and the git workflow for working on them, are written
+up in **[docs/HANDOFF.md](docs/HANDOFF.md)**.
+
 ### Team
 
 | Name | Role | Owns |
