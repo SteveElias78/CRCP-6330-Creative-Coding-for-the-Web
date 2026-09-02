@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Powder — a drawing toy</title>
+
+  <!-- One display font for the wordmark and HUD. Body/legend text uses the system stack. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- The whole toy. Sized in CSS to fill most of the viewport. -->
+  <main class="toy" id="toy">
+
+    <!-- Bezel: the chunky plastic shell around the screen. -->
+    <div class="bezel">
+      <h1 class="wordmark">Powder</h1>
+
+      <!-- Screen: the recessed window. The canvas is sized to this element in JS. -->
+      <div class="screen" id="screen">
+        <canvas id="board"></canvas>
+
+        <!-- Thickness readout. Value is written by JS from state.thickness. -->
+        <div class="hud" id="hud"><span id="thicknessValue">6</span> px</div>
+      </div>
+
+      <!-- Decorative knobs. They rotate with the stylus: left = x, right = y. -->
+      <div class="knob knob--left" id="knobLeft" aria-hidden="true"><i></i></div>
+      <div class="knob knob--right" id="knobRight" aria-hidden="true"><i></i></div>
+    </div>
+
+    <!-- Controls + keyboard legend, below the frame. -->
+    <div class="controls">
+      <button type="button" id="modeButton" class="btn">Mode: Analog</button>
+      <button type="button" id="shakeButton" class="btn">Shake</button>
+    </div>
+
+    <!-- Keys marked .pending are specified but not wired up yet (see TODOs in sketch.js). -->
+    <ul class="legend">
+      <li><kbd>F</kbd> analog / free</li>
+      <li class="pending"><kbd>&uarr;</kbd><kbd>&darr;</kbd> thickness</li>
+      <li class="pending"><kbd>Space</kbd> <kbd>E</kbd> erase</li>
+      <li class="pending"><kbd>S</kbd> save PNG</li>
+    </ul>
+  </main>
+
+  <script src="sketch.js"></script>
+</body>
+</html>

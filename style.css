@@ -1,0 +1,168 @@
+/* =========================================================================
+   Powder — skeleton stylesheet.
+   Step 1 of the build: palette + bare layout only, so the frame and canvas
+   exist and have a size. The retro toy look (bezel depth, knobs, screen
+   grain, shake animation) lands in the "build" commit.
+   ========================================================================= */
+
+/* --- Palette -------------------------------------------------------------
+   Every color in the app comes from here. Deliberately not the classic red
+   toy: this one is a deep teal shell with cream hardware. */
+:root {
+  --bezel:        #2e7d74;  /* main shell color */
+  --bezel-light:  #3f9d92;  /* top/left highlight on the molded plastic */
+  --bezel-dark:   #1d564f;  /* bottom/right shadow */
+  --screen:       #d7d1c3;  /* warm gray powder */
+  --screen-edge:  #b9b2a2;  /* inner shadow where the screen meets the bezel */
+  --ink:          #2b2b2e;  /* the drawn line: dark charcoal */
+  --cream:        #f2ead8;  /* wordmark, knob faces, legend text */
+  --knob:         #e6dcc6;
+  --knob-dark:    #b9ab8e;
+  --page:         #14312e;  /* the surface the toy is sitting on */
+
+  --frame-radius: 44px;
+  --screen-radius: 18px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--page);
+  color: var(--cream);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Center the toy, and keep the page itself from scrolling or rubber-banding
+     while the pointer is being dragged across the screen. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* --- Layout --------------------------------------------------------------
+   The toy fills most of the viewport; the bezel is a padded box and the
+   screen is whatever space is left inside it. */
+.toy {
+  width: min(96vw, 1200px);
+  height: 94vh;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bezel {
+  flex: 1;
+  min-height: 0;             /* let the flex child actually shrink */
+  position: relative;
+  padding: 56px 46px 78px;   /* extra room at the bottom for the knobs */
+  border-radius: var(--frame-radius);
+  background: var(--bezel);
+  display: flex;
+  flex-direction: column;
+}
+
+.wordmark {
+  font-family: "Bungee", system-ui, sans-serif;
+  font-size: clamp(18px, 2.4vw, 30px);
+  letter-spacing: 0.14em;
+  margin: 0 0 14px;
+  color: var(--cream);
+}
+
+/* The screen is the positioning context for the canvas and the HUD. */
+.screen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border-radius: var(--screen-radius);
+  background: var(--screen);
+  overflow: hidden;
+}
+
+/* The canvas is stretched to the screen box; its backing-store size is set
+   in JS from the element's measured size and the device pixel ratio. */
+#board {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;        /* pointer events only: no scroll/zoom hijack */
+  cursor: crosshair;
+}
+
+.hud {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  font-family: "Bungee", system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  opacity: 0.5;
+}
+
+/* Knobs are placeholders at this stage — round blanks in the bottom corners. */
+.knob {
+  position: absolute;
+  bottom: 14px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--knob);
+}
+.knob--left  { left: 26px; }
+.knob--right { right: 26px; }
+.knob i {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 4px;
+  height: 16px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--knob-dark);
+}
+
+/* --- Controls + legend --------------------------------------------------- */
+.controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn {
+  font: inherit;
+  color: var(--page);
+  background: var(--cream);
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 16px;
+  cursor: pointer;
+}
+
+.legend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  justify-content: center;
+  margin: 0;
+  padding: 0 0 4px;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* Specified but not yet implemented — see the TODOs in sketch.js. */
+.legend .pending { opacity: 0.4; }
+
+kbd {
+  font: inherit;
+  background: rgba(242, 234, 216, 0.16);
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-right: 2px;
+}
