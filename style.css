@@ -1,23 +1,24 @@
 /* =========================================================================
-   Powder — skeleton stylesheet.
-   Step 1 of the build: palette + bare layout only, so the frame and canvas
-   exist and have a size. The retro toy look (bezel depth, knobs, screen
-   grain, shake animation) lands in the "build" commit.
+   Powder — stylesheet.
+
+   The look: a chunky molded-plastic toy sitting on a dark surface. Depth
+   comes from gradients and inset shadows rather than images, so there are no
+   assets to load. Every color is a variable in :root.
    ========================================================================= */
 
 /* --- Palette -------------------------------------------------------------
-   Every color in the app comes from here. Deliberately not the classic red
-   toy: this one is a deep teal shell with cream hardware. */
+   Deliberately not the classic red toy: a deep teal shell with cream
+   hardware, a warm gray powder screen, and a charcoal line. */
 :root {
   --bezel:        #2e7d74;  /* main shell color */
-  --bezel-light:  #3f9d92;  /* top/left highlight on the molded plastic */
+  --bezel-light:  #4aa79b;  /* top/left highlight on the molded plastic */
   --bezel-dark:   #1d564f;  /* bottom/right shadow */
   --screen:       #d7d1c3;  /* warm gray powder */
-  --screen-edge:  #b9b2a2;  /* inner shadow where the screen meets the bezel */
+  --screen-edge:  #a89f8c;  /* inner shadow where the screen meets the bezel */
   --ink:          #2b2b2e;  /* the drawn line: dark charcoal */
   --cream:        #f2ead8;  /* wordmark, knob faces, legend text */
   --knob:         #e6dcc6;
-  --knob-dark:    #b9ab8e;
+  --knob-dark:    #a5946f;
   --page:         #14312e;  /* the surface the toy is sitting on */
 
   --frame-radius: 44px;
@@ -32,7 +33,9 @@ html, body {
 }
 
 body {
-  background: var(--page);
+  /* A soft pool of light behind the toy so it reads as sitting on a table. */
+  background:
+    radial-gradient(120% 90% at 50% 40%, #1c4340 0%, var(--page) 62%, #0d211f 100%);
   color: var(--cream);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -56,26 +59,53 @@ body {
   gap: 14px;
 }
 
+/* --- Bezel ---------------------------------------------------------------
+   Three layers of the same idea: a diagonal gradient for the molding, inset
+   shadows for the rounded lip, and one big soft drop shadow underneath. */
 .bezel {
   flex: 1;
   min-height: 0;             /* let the flex child actually shrink */
   position: relative;
-  padding: 56px 46px 78px;   /* extra room at the bottom for the knobs */
+  padding: 46px 44px 84px;   /* extra room at the bottom for the knobs */
   border-radius: var(--frame-radius);
-  background: var(--bezel);
+  background:
+    linear-gradient(158deg,
+      var(--bezel-light) 0%,
+      var(--bezel) 38%,
+      var(--bezel) 62%,
+      var(--bezel-dark) 100%);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.28),   /* top lip catching the light */
+    inset 0 -5px 0 rgba(0, 0, 0, 0.22),        /* bottom lip in shadow */
+    inset 0 0 60px rgba(0, 0, 0, 0.12),
+    0 28px 60px rgba(0, 0, 0, 0.48),
+    0 2px 0 rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
 }
 
-.wordmark {
-  font-family: "Bungee", system-ui, sans-serif;
-  font-size: clamp(18px, 2.4vw, 30px);
-  letter-spacing: 0.14em;
-  margin: 0 0 14px;
-  color: var(--cream);
+/* A faint seam line just inside the edge, like a mold parting line. */
+.bezel::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: calc(var(--frame-radius) - 12px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  pointer-events: none;
 }
 
-/* The screen is the positioning context for the canvas and the HUD. */
+.wordmark {
+  font-family: "Bungee", system-ui, sans-serif;
+  font-size: clamp(16px, 2.2vw, 28px);
+  letter-spacing: 0.18em;
+  margin: 0 0 16px 4px;
+  color: var(--cream);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.28);
+}
+
+/* --- Screen --------------------------------------------------------------
+   Recessed window. The canvas draws only the line; this element supplies the
+   powder color underneath it. */
 .screen {
   position: relative;
   flex: 1;
@@ -83,6 +113,26 @@ body {
   border-radius: var(--screen-radius);
   background: var(--screen);
   overflow: hidden;
+  box-shadow:
+    inset 0 4px 12px rgba(0, 0, 0, 0.30),   /* the recess */
+    inset 0 0 0 2px var(--screen-edge),
+    0 1px 0 rgba(255, 255, 255, 0.22);      /* highlight on the lower lip */
+}
+
+/* Grain: two offset dot grids over the drawing, so the line looks like it is
+   sitting under a fine powder rather than painted on glass. Plus a vignette
+   to darken the corners of the recess. */
+.screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;        /* never steal pointer events from the canvas */
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.055) 1px, transparent 1.2px),
+    radial-gradient(rgba(255, 255, 255, 0.55) 1px, transparent 1.2px),
+    radial-gradient(120% 100% at 50% 50%, transparent 58%, rgba(0, 0, 0, 0.14) 100%);
+  background-size: 3px 3px, 4px 4px, 100% 100%;
+  background-position: 0 0, 1px 2px, 0 0;
 }
 
 /* The canvas is stretched to the screen box; its backing-store size is set
@@ -97,34 +147,63 @@ body {
 
 .hud {
   position: absolute;
-  right: 12px;
+  right: 14px;
   bottom: 10px;
   font-family: "Bungee", system-ui, sans-serif;
-  font-size: 13px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
   color: var(--ink);
-  opacity: 0.5;
+  opacity: 0.4;
+  pointer-events: none;
 }
 
-/* Knobs are placeholders at this stage — round blanks in the bottom corners. */
+/* --- Knobs ---------------------------------------------------------------
+   Decorative hardware in the bottom corners. Two stacked layers, outer first:
+   the .knob box is the ridged rim (a repeating conic gradient, so it reads as
+   grippable), and ::before is the smaller lit face on top of it. The inner
+   <i> is the tick mark that the knob-rotation branch will spin — it paints
+   above ::before because element content sits above a ::before pseudo. */
 .knob {
   position: absolute;
-  bottom: 14px;
-  width: 52px;
-  height: 52px;
+  bottom: 12px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: var(--knob);
+  background: repeating-conic-gradient(
+    var(--knob-dark) 0deg 7.5deg,
+    var(--knob) 7.5deg 15deg);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.18),
+    0 5px 12px rgba(0, 0, 0, 0.45);
 }
-.knob--left  { left: 26px; }
-.knob--right { right: 26px; }
+
+/* The face: inset from the rim so a ring of ridges shows around it. */
+.knob::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 28%, var(--cream) 0%, var(--knob) 45%, var(--knob-dark) 100%);
+  box-shadow:
+    inset 0 -3px 6px rgba(0, 0, 0, 0.30),
+    inset 0 2px 3px rgba(255, 255, 255, 0.55);
+}
+
+.knob--left  { left: 28px; }
+.knob--right { right: 28px; }
+
 .knob i {
   position: absolute;
   left: 50%;
-  top: 8px;
+  top: 13px;
   width: 4px;
-  height: 16px;
+  height: 15px;
   margin-left: -2px;
   border-radius: 2px;
-  background: var(--knob-dark);
+  background: var(--page);
+  opacity: 0.55;
+  transform-origin: 50% 19px;   /* 13px top + 19px = 32px, the knob center */
 }
 
 /* --- Controls + legend --------------------------------------------------- */
@@ -136,13 +215,20 @@ body {
 
 .btn {
   font: inherit;
+  font-size: 13px;
   color: var(--page);
   background: var(--cream);
   border: 0;
   border-radius: 999px;
-  padding: 7px 16px;
+  padding: 7px 18px;
   cursor: pointer;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
 }
+.btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35); }
+
+/* Specified but not yet implemented — see the TODOs in sketch.js. */
+.btn.pending,
+.legend .pending { opacity: 0.4; }
 
 .legend {
   list-style: none;
@@ -156,13 +242,16 @@ body {
   opacity: 0.75;
 }
 
-/* Specified but not yet implemented — see the TODOs in sketch.js. */
-.legend .pending { opacity: 0.4; }
-
 kbd {
   font: inherit;
   background: rgba(242, 234, 216, 0.16);
   border-radius: 4px;
   padding: 1px 6px;
   margin-right: 2px;
+}
+
+/* Short viewports: give the screen the room instead of the padding. */
+@media (max-height: 620px) {
+  .bezel { padding: 26px 26px 70px; }
+  .wordmark { margin-bottom: 8px; }
 }
