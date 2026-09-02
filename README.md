@@ -1,5 +1,4 @@
-# Powder
-
+# SILVERTRACE
 A browser drawing toy: one continuous line that you steer instead of draw.
 Inspired by the mechanical knob-and-stylus toys of the 1960s, rebuilt for the web
 with vanilla HTML, CSS, and JavaScript. No frameworks, no build step.
