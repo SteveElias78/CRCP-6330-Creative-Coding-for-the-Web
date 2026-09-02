@@ -109,12 +109,12 @@ and visit <http://localhost:8000>.
 
 ## Expected output
 
-A teal toy frame filling the viewport with a warm gray screen inside it. Moving the
+A deep red toy frame filling the viewport with a warm gray screen inside it. Moving the
 mouse leaves one continuous charcoal line that trails behind the cursor. Two knobs in
 the bottom corners. A thickness readout in the corner of the screen and a keyboard
 legend below the frame.
 
-![Silvertrace running: a teal toy frame with a star and a loose ellipse drawn on the warm gray screen](docs/screenshot.png)
+![Silvertrace running: a deep red toy frame with a star and a loose ellipse drawn on the warm gray screen](docs/screenshot.png)
 
 Captured from the running app. The mouse traced a five-pointed star and then a
 loop around it — note where the line overshoots each point of the star and cuts

@@ -7,12 +7,15 @@
    ========================================================================= */
 
 /* --- Palette -------------------------------------------------------------
-   Deliberately not the classic red toy: a deep teal shell with cream
-   hardware, a warm gray powder screen, and a charcoal line. */
+   A deep brick red shell with cream hardware, a warm gray powder screen, and
+   a charcoal line. The red sits on a dark teal ground rather than a neutral
+   one — complementary, so the shell reads as an object on a table instead of
+   a rectangle on a background. Only the three shell tokens are red; the
+   hardware (--knob, --cream, --page) is unchanged. */
 :root {
-  --bezel:        #2e7d74;  /* main shell color */
-  --bezel-light:  #4aa79b;  /* top/left highlight on the molded plastic */
-  --bezel-dark:   #1d564f;  /* bottom/right shadow */
+  --bezel:        #b8352f;  /* main shell color */
+  --bezel-light:  #d95a4e;  /* top/left highlight on the molded plastic */
+  --bezel-dark:   #7a1f1c;  /* bottom/right shadow */
   --screen:       #d7d1c3;  /* warm gray powder */
   --screen-edge:  #a89f8c;  /* inner shadow where the screen meets the bezel */
   --ink:          #2b2b2e;  /* the drawn line: dark charcoal */
