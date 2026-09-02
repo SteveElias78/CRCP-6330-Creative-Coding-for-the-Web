@@ -1,5 +1,5 @@
 /* =========================================================================
-   Powder — a drawing toy.
+   Silvertrace — a drawing toy.
 
    The core idea: in analog mode the stylus is ALWAYS touching the powder.
    You never click. The pointer is a target, and the stylus chases it with
@@ -263,7 +263,7 @@ function onKeyDown(event) {
      button and the legend entries when it lands.
 
    TODO(save): S exports the drawing. canvas.toDataURL('image/png') into a
-     temporary <a download="powder.png">, click it, revoke. The canvas holds
+     temporary <a download="silvertrace.png">, click it, revoke. The canvas holds
      only the ink — the powder color comes from CSS — so composite onto an
      offscreen canvas filled with --screen first, or the PNG is transparent.
 

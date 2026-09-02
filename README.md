@@ -1,4 +1,5 @@
 # SILVERTRACE
+
 A browser drawing toy: one continuous line that you steer instead of draw.
 Inspired by the mechanical knob-and-stylus toys of the 1960s, rebuilt for the web
 with vanilla HTML, CSS, and JavaScript. No frameworks, no build step.
@@ -110,7 +111,7 @@ mouse leaves one continuous charcoal line that trails behind the cursor. Two kno
 the bottom corners. A thickness readout in the corner of the screen and a keyboard
 legend below the frame.
 
-![Powder running: a teal toy frame with a star and a loose ellipse drawn on the warm gray screen](docs/screenshot.png)
+![Silvertrace running: a teal toy frame with a star and a loose ellipse drawn on the warm gray screen](docs/screenshot.png)
 
 Captured from the running app. The mouse traced a five-pointed star and then a
 loop around it — note where the line overshoots each point of the star and cuts
